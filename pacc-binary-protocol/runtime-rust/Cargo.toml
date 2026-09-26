@@ -1,0 +1,15 @@
+[package]
+name = "pacc-binary-protocol"
+# 与 runtime-java/pom.xml 的 1.0.0 对齐：协议运行时是独立版本号，
+# 不随 PACC 产品版本走，所以刻意不出现在 scripts/bump-version.sh 的替换清单里。
+version = "1.0.0"
+edition = "2021"
+description = "PBP 二进制协议运行时（Rust）：帧封装、VarInt/ZigZag 有序字段编解码、HMAC-SHA256 签名、自研零依赖 zstd 子集。"
+license = "MIT"
+
+[lib]
+name = "pacc_binary_protocol"
+path = "src/lib.rs"
+
+# 零第三方依赖是硬约束：HMAC-SHA256 与 zstd 子集都在本 crate 内自实现。
+[dependencies]

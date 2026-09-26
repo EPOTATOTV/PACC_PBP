@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <!-- 独立版本号：不随 PACC 产品版本走，主项目按精确版本锁定（见 AGENTS.md 与设计文档 §1.4）。
+         因此本 pom 刻意不出现在 scripts/bump-version.sh 的替换清单里。 -->
+    <groupId>com.potatotv</groupId>
+    <artifactId>pacc-binary-protocol</artifactId>
+    <version>1.0.0</version>
+    <name>PACC Binary Protocol</name>
+    <description>PBP 二进制协议运行时：帧封装、VarInt/ZigZag 有序字段编解码、ChaCha20-Poly1305 加密、
+        HMAC-SHA256 签名、HKDF 会话密钥派生、X25519 密钥协商。PACC 协议消息由 tools/pbpgen 从 MDL 生成。</description>
+
+    <properties>
+        <java.version>21</java.version>
+        <maven.compiler.source>21</maven.compiler.source>
+        <maven.compiler.target>21</maven.compiler.target>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    </properties>
+
+    <dependencies>
+        <dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter</artifactId>
+            <version>5.10.2</version>
+            <scope>test</scope>
+        </dependency>
+    </dependencies>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>3.11.0</version>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <version>3.2.5</version>
+            </plugin>
+            <!-- 零依赖是硬约束，不是文档口号：一旦有人给运行时加上第三方依赖，构建直接失败。
+                 只允许 test 作用域（JUnit），主代码只能用 JDK 标准库。 -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-enforcer-plugin</artifactId>
+                <version>3.4.1</version>
+                <executions>
+                    <execution>
+                        <id>enforce-zero-dependencies</id>
+                        <phase>validate</phase>
+                        <goals>
+                            <goal>enforce</goal>
+                        </goals>
+                        <configuration>
+                            <rules>
+                                <bannedDependencies>
+                                    <searchTransitive>true</searchTransitive>
+                                    <excludes>
+                                        <exclude>*:*:*:*:compile</exclude>
+                                        <exclude>*:*:*:*:runtime</exclude>
+                                    </excludes>
+                                    <message>PBP 运行时必须零第三方依赖（仅允许 test 作用域的 JUnit）。</message>
+                                </bannedDependencies>
+                            </rules>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
+</project>

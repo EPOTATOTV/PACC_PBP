@@ -1,0 +1,28 @@
+// PACC WSS 查端信令信封（由 proto/pacc_wire.proto 的 WsEnvelope 迁移而来）。
+//
+// 消息 ID 区间台账（设计文档 §3.5），改 ID 之前先看这张表：
+//   0x0000-0x00FF  系统
+//   0x0100-0x0FFF  客户端 → 服务端
+//   0x1000-0x1FFF  服务端 → 客户端
+//   0x2000-0x2FFF  双向（本信封属于这一类）
+//   0x3000-0xEFFF  预留，禁止使用
+//   0xF000-0xFFFF  自定义
+
+syntax = "pbp1";
+package com.potatotv.pbp.gen;
+
+option java_package = "com.potatotv.pbp.gen";
+
+message PaccEnvelope {
+    0x2001: id
+    option signed = true;
+    option frame_timestamp = ts_ms;
+
+    string type = 1;
+    int64 ts_ms = 2;
+    string nonce = 3;
+    string session_id = 4;
+    string pteid = 5;
+    string payload_json = 6;
+    uint8 sig_version = 7;
+}

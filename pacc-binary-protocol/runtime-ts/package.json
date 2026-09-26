@@ -1,0 +1,15 @@
+{
+  "name": "@potatotv/pacc-binary-protocol",
+  "version": "1.0.0",
+  "description": "PBP 二进制协议的 TypeScript 运行时（零第三方依赖，浏览器与 Node 通用）。",
+  "type": "module",
+  "main": "dist/src/index.js",
+  "types": "dist/src/index.d.ts",
+  "scripts": {
+    "build": "tsc -p .",
+    "test": "tsc -p . && node --test dist/test"
+  },
+  "devDependencies": {
+    "typescript": "^5.4.0"
+  }
+}

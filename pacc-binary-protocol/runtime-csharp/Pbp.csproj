@@ -1,0 +1,19 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>disable</ImplicitUsings>
+    <RootNamespace>Potatotv.Pbp</RootNamespace>
+    <AssemblyName>Pbp</AssemblyName>
+    <LangVersion>latest</LangVersion>
+    <GenerateDocumentationFile>false</GenerateDocumentationFile>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <!-- tests 是独立的控制台工程，别被库工程的默认通配收进来 -->
+    <Compile Remove="tests/**" />
+    <None Remove="tests/**" />
+  </ItemGroup>
+
+</Project>

@@ -1,0 +1,26 @@
+# --- 构建产物 ---
+target/
+build/
+dist/
+out/
+*.class
+*.jar
+*.war
+# .NET 编译产物
+bin/
+obj/
+**/.gradle/
+# --- Python 字节码缓存 ---
+__pycache__/
+*.pyc
+# --- Node ---
+node_modules/
+coverage/
+*.tsbuildinfo
+# --- IDE / OS / 日志 ---
+.idea/
+*.iml
+.vscode/
+Thumbs.db
+.DS_Store
+*.log

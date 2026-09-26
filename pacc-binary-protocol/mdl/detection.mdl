@@ -1,0 +1,40 @@
+// PACC 检测上报消息（设计文档 §3.6.1 的 detection.mdl）。
+//
+// 这批消息目前没有接进 WSS 链路（信令仍只用 PaccEnvelope），它们是协议侧的
+// 定义与生成器/多语言运行时的验证载体：列表、映射、嵌套消息、枚举语义都在这里。
+
+syntax = "pbp1";
+package com.potatotv.pbp.gen;
+
+option java_package = "com.potatotv.pbp.gen";
+
+// ========== 检测上报（核心消息） ==========
+message DetectionReport {
+    0x0103: id
+
+    string pteid = 1;
+    int64 timestamp = 2;
+    string client_version = 3;
+    string platform = 4;
+    repeated DetectionEvent events = 5;
+    ApmSnapshot apm = 6;           // optional
+    bytes signature = 7;
+}
+
+message DetectionEvent {
+    // 无消息ID，仅作为嵌套类型
+    int32 event_type = 1;          // 枚举语义: 1=内存篡改,2=可疑进程,3=输入异常...
+    float32 confidence = 2;
+    int64 timestamp = 3;
+    map<string, bytes> evidence = 4;
+    string detail = 5;             // optional
+}
+
+message ApmSnapshot {
+    float32 cpu_usage = 1;
+    int32 memory_usage_kb = 2;
+    float32 fps = 3;
+    int32 detection_latency_ms = 4;
+    int32 active_rules = 5;
+    map<string, float32> custom_metrics = 6;
+}
